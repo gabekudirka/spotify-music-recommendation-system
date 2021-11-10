@@ -32,3 +32,7 @@ python3 -m pip install -r requirements.txt
 ```
 deactivate
 ```
+
+### Download Dataset
+
+Download the dataset from https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge. Unzip it, keeping the name as `spotify_million_playlist_dataset` and drag it into your working directory.
