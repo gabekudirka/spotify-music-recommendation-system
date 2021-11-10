@@ -138,3 +138,5 @@ dmypy.json
 cython_debug/
 
 .DS_Store
+
+spotify_million_playlist_dataset/
