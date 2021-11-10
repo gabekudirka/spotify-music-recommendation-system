@@ -35,4 +35,6 @@ deactivate
 
 ### Download Dataset
 
-Download the dataset from https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge. Unzip it, keeping the name as `spotify_million_playlist_dataset` and drag it into your working directory.
+Download the [Spotify Million Playlist Dataset](https://www.aicrowd.com/challenges/spotify-million-playlist-dataset-challenge).
+
+Unzip it, keeping the name as `spotify_million_playlist_dataset` and move it to the root of your working directory.
