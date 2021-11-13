@@ -1,4 +1,5 @@
 from sklearn.cluster import MeanShift
+from sklearn.cluster import KMeans
 
 import numpy as np
 
@@ -17,8 +18,10 @@ class TrackClusterer:
     def cluster(self):
         b = list(map(self.track_attributes_to_array, self.tracks))
         X = np.array(b)
-        clustering = MeanShift(bandwidth=2).fit(X)
+        # clustering = MeanShift(bandwidth=2).fit(X)
+        # print(clustering.__dict__)
+        # print(clustering.predict([self.track_attributes_to_array(self.predict_track)]))
 
-        print(clustering.__dict__)
-
-        print(clustering.predict([self.track_attributes_to_array(self.predict_track)]))
+        kmeans = KMeans(n_clusters = 5, random_state = 0).fit(X)
+        print(kmeans.__dict__)
+        print(kmeans.predict([self.track_attributes_to_array(self.predict_track)]))
