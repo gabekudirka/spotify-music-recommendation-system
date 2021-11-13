@@ -16,7 +16,7 @@ class PlaylistDecoder():
     playlist_directory = r'spotify_million_playlist_dataset/data'
 
     def __init__(self):
-        self.playlists = set()
+        self.playlists = []
 
     def decode(self):
         playlist_filenames = []
@@ -46,4 +46,9 @@ class PlaylistDecoder():
             current_dict_playlist['tracks'] = current_playlist_tracks
 
             new_playlist = Playlist(**current_dict_playlist)
-            self.playlists.add(new_playlist)
+            self.playlists.append(new_playlist)
+
+if __name__ == '__main__':
+    p = PlaylistDecoder()
+    p.decode()
+    print(p.playlists[0].tracks[0].__dict__)
