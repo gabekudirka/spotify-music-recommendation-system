@@ -41,10 +41,10 @@ Unzip it, keeping the name as `spotify_million_playlist_dataset` and move it to 
 
 ### Get your Client ID and Client Secret
 
-Navigate to https://developer.spotify.com/dashboard/
-Log in or create a Spotify account
-Click 'CREATE AN APP' and create the app
-Click on the app and you will see the client ID and client secret
+- Navigate to https://developer.spotify.com/dashboard/
+- Log in or create a Spotify account
+- Click `CREATE AN APP` and create the app
+- Click on the app and you will see the client ID and client secret
 
 ### Set up Client ID and Client Secret in the project
 
