@@ -48,8 +48,8 @@ Unzip it, keeping the name as `spotify_million_playlist_dataset` and move it to 
 
 ### Set up Client ID and Client Secret in the project
 
-Create file named '.env' in the workspace directory
-Insert the following lines into the .env file:
+Create file named `.env` in the workspace directory
+Insert the following lines into the `.env` file:
 ```
 SPOTIFY_CLIENT_ID=<Your Client ID>
 SPOTIFY_CLIENT_SECRET=<Your Client Secret>
