@@ -23,7 +23,7 @@ class PlaylistDecoder:
         playlist_filenames = os.listdir(PlaylistDecoder.playlist_directory)
 
         # decode just first 10 playlists for testing
-        playlist_filenames = playlist_filenames[:10]
+        # playlist_filenames = playlist_filenames[:10]
 
         file_amount = len(playlist_filenames)
         print(f'{ file_amount } playlist files to decode')
