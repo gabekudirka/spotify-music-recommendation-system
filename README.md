@@ -1,3 +1,11 @@
+# Running
+
+Start the Python environment and from the `src` directory run:
+
+```
+python3 evaluate.py
+```
+
 
 # Setup
 
