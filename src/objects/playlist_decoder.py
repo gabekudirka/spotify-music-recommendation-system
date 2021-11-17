@@ -23,7 +23,7 @@ class PlaylistDecoder:
         playlist_filenames = os.listdir(PlaylistDecoder.playlist_directory)
 
         # decode just first 10 playlists for testing
-        # playlist_filenames = playlist_filenames[:10]
+        playlist_filenames = playlist_filenames[:10]
 
         file_amount = len(playlist_filenames)
         print(f'{ file_amount } playlist files to decode')
@@ -46,7 +46,7 @@ class PlaylistDecoder:
             for track in current_dict_playlist['tracks']:
                 current_track = Track(**track)
                 self.tracks[current_track.track_uri] = current_track
-                current_playlist_tracks.insert(current_track.track_uri)
+                current_playlist_tracks.append(current_track.track_uri)
 
             current_dict_playlist['tracks'] = current_playlist_tracks
 
