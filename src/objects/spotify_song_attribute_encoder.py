@@ -17,7 +17,7 @@ class SongAttributeEncoder:
         self.tracks = set()
 
     def decode_playlist_files_to_tracks(self):
-        playlist_filenames = os.listdir(PlaylistDecoder.playlist_directory)[:1]
+        playlist_filenames = os.listdir(PlaylistDecoder.playlist_directory)
 
         file_amount = len(playlist_filenames)
         print(f'{ file_amount } playlist files to decode')
