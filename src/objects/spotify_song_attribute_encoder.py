@@ -10,14 +10,12 @@ from spotipy_helper import SpotipyHelper
 
 class SongAttributeEncoder:
 
-    playlist_directory = r'spotify_million_playlist_dataset/data'
-
     def __init__(self):
         self.helper = SpotipyHelper()
         self.tracks = set()
 
     def decode_playlist_files_to_tracks(self):
-        playlist_filenames = os.listdir(PlaylistDecoder.playlist_directory)
+        playlist_filenames = os.listdir(PlaylistDecoder.playlist_directory)[:1]
 
         file_amount = len(playlist_filenames)
         print(f'{ file_amount } playlist files to decode')
