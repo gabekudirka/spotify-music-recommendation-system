@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<body>
+  <h1>
+    Spotify Song Recommendation
+  </h1>
+  <div>
+    <h3>
+      Input song URI here
+    </h3>
+    <input type="text">
+    <button>Submit</button>
+  </div>
+  <ul>
+    {% for song in recommended_list %}
+      <li class="{% cycle 'row1' 'row2' %}"></li>
+    {% endfor %}
+  </ul>
+</body>
