@@ -11,8 +11,10 @@
     <button>Submit</button>
   </div>
   <ul>
-    {% for song in recommended_list %}
-      <li class="{% cycle 'row1' 'row2' %}"></li>
+    {% for song in recommended_songs %}
+      <li class="{% cycle 'row1' 'row2' %}">
+        <a href="{{song.url}}" target="_blank">{{ song.title }} by {{song.artist}}</a>
+      </li>
     {% endfor %}
   </ul>
 </body>
