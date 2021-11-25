@@ -140,3 +140,4 @@ cython_debug/
 .DS_Store
 
 spotify_million_playlist_dataset/
+spotify_track_attributes/

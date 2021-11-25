@@ -44,12 +44,12 @@ class PlaylistDecoder:
         for i in range(0, len(data['playlists'])):
 
             current_dict_playlist = data['playlists'][i]
-            current_playlist_tracks = set()
+            current_playlist_tracks = []
 
             for track in current_dict_playlist['tracks']:
                 current_track = Track(**track)
                 self.tracks[current_track.track_uri] = current_track
-                current_playlist_tracks.add(current_track.track_uri)
+                current_playlist_tracks.append(current_track.track_uri)
 
             current_dict_playlist['tracks'] = current_playlist_tracks
 

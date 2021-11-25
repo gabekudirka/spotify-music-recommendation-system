@@ -10,8 +10,6 @@ from spotipy_helper import SpotipyHelper
 
 class SongAttributeEncoder:
 
-    playlist_directory = r'spotify_million_playlist_dataset/data'
-
     def __init__(self):
         self.helper = SpotipyHelper()
         self.tracks = set()

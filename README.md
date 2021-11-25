@@ -1,3 +1,11 @@
+# Running
+
+Start the Python environment and from the `src` directory run:
+
+```
+python3 evaluate.py
+```
+
 
 # Setup
 
@@ -48,9 +56,19 @@ Unzip it, keeping the name as `spotify_million_playlist_dataset` and move it to 
 
 ### Set up Client ID and Client Secret in the project
 
-Create file named `.env` in the workspace directory
-Insert the following lines into the `.env` file:
+Create a file named `.env` in the `src` directory with the following lines:
 ```
 SPOTIFY_CLIENT_ID=<Your Client ID>
 SPOTIFY_CLIENT_SECRET=<Your Client Secret>
 ```
+
+### Create Track Attributes Dataset
+
+After downloading the Spotify Million Playlist Dataset, the track attributes dataset needs to be created.
+
+From the `src` directory, run
+```
+python objects/spotify_song_attribute_encoder.py
+```
+
+This will generate a folder `spotify_track_attributes` that holds the song attributes for a track_uri.
