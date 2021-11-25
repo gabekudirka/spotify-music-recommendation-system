@@ -11,9 +11,11 @@ class TrackClusterer:
 
     def track_attributes_to_array(self, track):
         a = []
-        a.append(hash(track.artist_name))
-        a.append(hash(track.track_name))
-        a.append(hash(track.album_name))
+        for audio_feature in track.audio_features.values():
+            a.append(audio_feature)
+        for track_feature in track.track_features.values():
+            a.append(hash(track_feature))
+
         return a
 
     def cluster(self):
@@ -37,6 +39,6 @@ class TrackClusterer:
                 recommended_songs.append(self.tracks[i])
 
 
-        print(f'Given song: { self.predict_track.track_name }')
+        print(f'Given song: { self.predict_track.track_features["track_name"] }')
         print(f'Recommended Songs:')
-        pprint.pprint(list(map(lambda t: t.track_name, recommended_songs)))
+        pprint.pprint(list(map(lambda t: t.track_features['track_name'], recommended_songs)))
