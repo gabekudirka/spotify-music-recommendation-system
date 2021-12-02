@@ -10,16 +10,14 @@ class TopSongs:
             totalDif += (target[attribute] - song[attribute ])**2
         return totalDif
 
-    def getSimilarSongs(self, songs, target, n):
+    def getSimilarSongs(songs, target, n):
         topSongs = {}
-        for key, val in songs:
-            score = mse(val,target[0])
+        for key, val in songs.items():
+            score = TopSongs.mse(val,target)
             topSongs[key]=score
-        sortedSongs = sorted(topSongs, key=topSongs.get, reverse=True)
-        for song in sortedSongs:
-            print(topSongs,song)
-
-        return sortedSongs
+        sortedSongs = {k: v for k, v in sorted(topSongs.items(), key=lambda item: item[1])}
+        #print(sortedSongs)
+        return list(sortedSongs.items())[:n]
 
 
         
@@ -27,5 +25,5 @@ class TopSongs:
 if __name__ == '__main__':
     d = TrackAttributeDecoder()
     d.decode_attribute_files()
-    print(d.tracks.keys())
-    getSimilarSongs(d.tracks,d.tracks['6exe9pbk1gLudSijdPau0K'],10)
+    #print(d.tracks.keys())
+    print(TopSongs.getSimilarSongs(d.tracks,d.tracks["spotify:track:3G8eHnIYQX6Gbjc5vulISf"],5))
