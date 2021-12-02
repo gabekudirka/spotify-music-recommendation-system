@@ -1,18 +1,13 @@
 import json
 import os
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
-from settings import SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET
-from test import extractSpotipyData
 
 class Playlist:
     def __init__(self, **entries):
         self.__dict__.update(entries)
 
 class Track:
-    def __init__(self, track_features, audio_features):
-        self.track_features = track_features
-        self.audio_features = audio_features
+    def __init__(self, **entries):
+        self.__dict__.update(entries)
 
 class PlaylistDecoder:
 

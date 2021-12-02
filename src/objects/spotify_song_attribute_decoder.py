@@ -21,6 +21,7 @@ class TrackAttributeDecoder:
         attribute_filenames = os.listdir(TrackAttributeDecoder.attributes_directory)
 
         file_amount = len(attribute_filenames)
+
         print(f'{ file_amount } attribute files to decode')
 
         for index, filename in enumerate(attribute_filenames):
@@ -35,8 +36,6 @@ class TrackAttributeDecoder:
 
         for track_uri in data['songs'].keys():
             self.tracks[track_uri] = data['songs'][track_uri]
-
-        f.close()
 
 if __name__ == '__main__':
     d = TrackAttributeDecoder()
