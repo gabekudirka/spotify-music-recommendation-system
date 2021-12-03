@@ -1,5 +1,5 @@
 from objects.spotify_song_attribute_decoder import TrackAttributeDecoder
-import numpy
+from sklearn.preprocessing import normalize 
 
 class TopSongs:
     def __init__(self):
@@ -24,7 +24,10 @@ class TopSongs:
             index += 1
             for attribute in self.attributes:
                 if vals is not None:
-                    normSongs[key][attribute] = (vals[attribute] - mins[attribute])/(maxs[attribute]-mins[attribute])
+                    if maxs[attribute]-mins[attribute] != 0:
+                        normSongs[key][attribute] = (vals[attribute] - mins[attribute])/(maxs[attribute]-mins[attribute])
+                    else:
+                         normSongs[key][attribute] = vals[attribute]
         return normSongs
 
     def mse(self, song, target):
