@@ -3,7 +3,6 @@ import math
 import os
 import spotipy
 
-from itertools import islice
 from .playlist_decoder import PlaylistDecoder
 from spotipy.oauth2 import SpotifyClientCredentials
 from .spotipy_helper import SpotipyHelper
@@ -15,10 +14,14 @@ class TrackAttributeDecoder:
     def __init__(self):
         self.tracks = {}
 
-    def decode_attribute_files(self):
+    def decode_attribute_files(self, num_files = 'all'):
         assert os.path.exists(os.path.join(os.getcwd(), 'spotify_track_attributes')), 'path "spotify_track_attributes" doesn\' exist'
 
-        attribute_filenames = os.listdir(TrackAttributeDecoder.attributes_directory)
+        if num_files == 'all':
+            attribute_filenames = os.listdir(TrackAttributeDecoder.attributes_directory)
+        else:
+            attribute_filenames = os.listdir(TrackAttributeDecoder.attributes_directory)[:num_files]
+        
 
         file_amount = len(attribute_filenames)
         print(f'{ file_amount } attribute files to decode')
