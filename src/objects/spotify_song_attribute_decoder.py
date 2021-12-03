@@ -9,13 +9,13 @@ from .spotipy_helper import SpotipyHelper
 
 class TrackAttributeDecoder:
 
-    attributes_directory = r'spotify_track_attributes'
+    attributes_directory = r'src/spotify_track_attributes'
 
     def __init__(self):
         self.tracks = {}
 
     def decode_attribute_files(self, num_files = 'all'):
-        assert os.path.exists(os.path.join(os.getcwd(), 'spotify_track_attributes')), 'path "spotify_track_attributes" doesn\' exist'
+        assert os.path.exists(os.path.join(os.getcwd(), 'src/spotify_track_attributes')), 'path "spotify_track_attributes" doesn\' exist'
 
         if num_files == 'all':
             attribute_filenames = os.listdir(TrackAttributeDecoder.attributes_directory)
