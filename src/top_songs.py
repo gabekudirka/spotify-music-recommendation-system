@@ -5,7 +5,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 class TopSongs:
     def __init__(self):
         self.attributes = [ "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo"]
-        
+
     def normalize_attr(self, songs):
         print('normalizing song attributes')
         mins = dict.fromkeys(self.attributes,10000000000)
@@ -14,7 +14,7 @@ class TopSongs:
         for key, vals in songs.items():
             #print(f'- getting min/max { index + 1 }/{ numSongs}: { key }          ', end='\r')
             index += 1
-            for attribute in self.attributes:                
+            for attribute in self.attributes:
                 if vals is not None:
                     mins[attribute] = min(vals[attribute], mins[attribute])
                     maxs[attribute] = max(vals[attribute], maxs[attribute])
@@ -42,14 +42,14 @@ class TopSongs:
         if song is None:
             return 1000000000
         totalDif = 0
-        for attribute in self.attributes:    
+        for attribute in self.attributes:
             totalDif += (target[attribute] - song[attribute ])**2
         return totalDif
 
     def get_similar_songs(self, songs, target, n):
         numSongs = len(songs)
         print('Number of songs:', numSongs)
-        #self.normalize_attr_sklearn(songs)
+        # self.normalize_attr_sklearn(songs)
         songs[self.attributes] = preprocessing.Normalizer().fit_transform(songs[self.attributes])
         target = preprocessing.Normalizer().transform(target[self.attributes])
         songs_dict = songs.set_index('track_id').T.to_dict('dict')
@@ -62,7 +62,7 @@ class TopSongs:
         return list(sortedSongs.items())[:n]
 
 
-        
+
 
 if __name__ == '__main__':
     d = TrackAttributeDecoder()
