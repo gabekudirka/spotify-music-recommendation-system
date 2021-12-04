@@ -23,7 +23,9 @@ def index(request):
       data = form.cleaned_data
       playlist_uri = data['playlist_uri']
       playlist_dictionary = get_playlist_tracks(playlist_uri)
-      
+      predict = PredictSongs()
+      predicted_songs = PredictSongs.predict(playlist_dictionary, 10)
+      print(predicted_songs)
     #TODO send the recomemdations back
     # or not this is pretty solid already
     for i in range(500):
