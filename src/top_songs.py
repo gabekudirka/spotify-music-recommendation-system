@@ -1,6 +1,6 @@
 from objects.spotify_song_attribute_decoder import TrackAttributeDecoder
 from sklearn import preprocessing
-from sklearn.metrics.pairwise import cosine_similarity
+from scipy import spatial
 
 class TopSongs:
     def __init__(self):
@@ -39,21 +39,52 @@ class TopSongs:
             totalDif += (target[attribute] - song[attribute ])**2
         return totalDif
 
+    def cosine_similarity(self, song, target):
+        if song is None:
+            return 0
+        return 1 - spatial.distance.cosine(song, target)
+
+    # def get_similar_songs(self, songs, target, n):
+    #     numSongs = len(songs)
+    #     print('Number of songs:', numSongs)
+    #     songs[self.attributes] = preprocessing.Normalizer().fit_transform(songs[self.attributes])
+    #     target[self.attributes] = preprocessing.Normalizer().transform(target[self.attributes])
+
+    #     #songs_dict = songs.set_index('track_id').T.to_dict('dict')
+    #     topSongs = {}
+
+    #     for key, val in songs[self.attributes].iterrows():
+    #         target_vals = target[self.attributes].values[0]
+    #         score = self.cosine_similarity(val.values,target_vals)
+    #         topSongs[key]=score
+    #     sortedSongs = {k: v for k, v in sorted(topSongs.items(), key=lambda item: item[1], reverse=True)}
+    #     return list(sortedSongs.items())[:n]
+
     def get_similar_songs(self, songs, target, n):
-        numSongs = len(songs)
-        print('Number of songs:', numSongs)
-        songs[self.attributes] = preprocessing.Normalizer().fit_transform(songs[self.attributes])
-        target[self.attributes] = preprocessing.Normalizer().transform(target[self.attributes])
-        songs_dict = songs.set_index('track_id').T.to_dict('dict')
-        topSongs = {}
+            numSongs = len(songs)
+            print('Number of songs:', numSongs)
+            songs[self.attributes] = preprocessing.Normalizer().fit_transform(songs[self.attributes])
+            target[self.attributes] = preprocessing.Normalizer().transform(target[self.attributes])
 
-        for key, val in songs_dict.items():
-            score = self.mse(val,target)
-            topSongs[key]=score
-        sortedSongs = {k: v for k, v in sorted(topSongs.items(), key=lambda item: item[1])}
-        return list(sortedSongs.items())[:n]
+            #songs_dict = songs.set_index('track_id').T.to_dict('dict')
+            topSongs = {}
+            idx = 0
 
-
+            for key, val in songs[self.attributes].iterrows():
+                target_vals = target[self.attributes].values[0]
+                score = self.cosine_similarity(val.values,target_vals)
+                #only keeps smallest n items so no sorting is necessary at the end
+                if idx >= n:
+                    smallest_so_far = min(topSongs.values())
+                    if score > smallest_so_far:
+                        topSongs = {k:v for k,v in topSongs.items() if v != smallest_so_far}
+                        #topSongs.pop(min(topSongs, key=topSongs.get))
+                        topSongs[key] = score
+                else:
+                    topSongs[key] = score
+                idx += 1
+    
+            return topSongs
         
 
 if __name__ == '__main__':
