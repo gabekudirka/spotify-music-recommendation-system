@@ -31,13 +31,6 @@ class TopSongs:
                          normSongs[key][attribute] = vals[attribute]
         return normSongs
 
-    def normalize_attr_sklearn(self, songs):
-        normalized_songs = preprocessing.Normalizer().fit_transform(songs[self.attributes])
-        for key, vals in songs.items():
-            for attribute in self.attributes:
-                if vals is not None:
-                    songs[key][attribute] = normalize([vals[attribute]])
-
     def mse(self, song, target):
         if song is None:
             return 1000000000
@@ -49,9 +42,8 @@ class TopSongs:
     def get_similar_songs(self, songs, target, n):
         numSongs = len(songs)
         print('Number of songs:', numSongs)
-        #self.normalize_attr_sklearn(songs)
         songs[self.attributes] = preprocessing.Normalizer().fit_transform(songs[self.attributes])
-        target = preprocessing.Normalizer().transform(target[self.attributes])
+        target[self.attributes] = preprocessing.Normalizer().transform(target[self.attributes])
         songs_dict = songs.set_index('track_id').T.to_dict('dict')
         topSongs = {}
 

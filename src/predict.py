@@ -33,12 +33,13 @@ class PredictSongs():
             cluster = self.all_songs.loc[self.all_songs['labels'] == predicted_cluster_label]
             related_songs = cluster.set_index('track_id').T.to_dict('dict')
             #Get the most similar songs in that cluster
-            best_related_songs = self.top_songs.get_similar_songs(cluster, features, 50)
+            best_related_songs = self.top_songs.get_similar_songs(cluster, track_features, 50)
             all_related_songs.append(best_related_songs)
         
         #sort the list based on the frequency of the songs
         all_related_songs = [track[0] for sublist in all_related_songs for track in sublist]
         related_songs_sorted = [item for items, c in Counter(all_related_songs).most_common() for item in [items] * c]
+
         related_songs_sorted = list(OrderedDict.fromkeys(related_songs_sorted))
         #return top n most frequently occuring songs
         return related_songs_sorted[:num_songs]
