@@ -7,12 +7,12 @@
     <h3>
       Input song URI here
     </h3>
-    <!-- Yes csrf can happen but ehh -->
     <form id="input-form", method='POST'>{% csrf_token %}
       <input type="text" name="playlist_uri">
       <input class="button" value="recommend" type="submit">
     </form>
   </div>
+
   <div class="recommendation-list">
     <h3>Recommended Songs:</h3>
     <ul>
