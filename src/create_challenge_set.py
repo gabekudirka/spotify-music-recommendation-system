@@ -1,24 +1,26 @@
 import json
 import numpy as np
 import pandas as pd
+import sys
 
 from predict import PredictSongs
 from objects.spotify_song_attribute_decoder import TrackAttributeDecoder
 from objects.spotipy_helper import SpotipyHelper
 
 class ChallengeSetCreator():
-    def __init__(self):
-        t = TrackAttributeDecoder()
-        t.decode_attribute_files()
+    def __init__(self, submission_filename):
+        self.t = TrackAttributeDecoder()
+        self.t.decode_attribute_files()
 
-        self.p = PredictSongs(t.tracks)
+        self.p = PredictSongs(self.t.tracks)
         self.playlist_predictions = []
         self.helper = SpotipyHelper()
+        self.submission_filename = submission_filename
 
     def create_playlist_csv(self):
         # add team info
 
-        f = open("submission.csv", "w")
+        f = open(self.submission_filename, "w")
         f.write('team_info,InformationRetrievalFall2021Pippin,ethanpippin2343@gmail.com\n')
 
         for prediction in self.playlist_predictions:
@@ -39,9 +41,14 @@ class ChallengeSetCreator():
 
     def get_attributes_for_tracks_in_playlist(self, playlist):
 
-        playlist_track_uris = [track['track_uri'] for track in playlist['tracks']]
+        playlist_track_uris = [track['track_uri'] for track in playlist['tracks']][:1]
 
-        track_attributes = self.helper.get_attributes_for_track_batch(playlist_track_uris)
+        track_attributes = []
+
+        for track_uri in playlist_track_uris:
+            attributes = self.t.tracks[track_uri]
+
+            track_attributes.append(attributes)
 
         final_form = {}
         for index, track_id in enumerate(playlist_track_uris):
@@ -53,9 +60,8 @@ class ChallengeSetCreator():
         f = open('challenge_set.json')
         data = json.load(f)
 
-        challenge_playlists = data['playlists']
+        challenge_playlists = data['playlists'][3000:4000]
 
-        # do this first so that session stays alive with Spotify
         playlists_with_attributes = []
 
         for playlist in challenge_playlists:
@@ -68,5 +74,11 @@ class ChallengeSetCreator():
 
 
 if __name__ == '__main__':
-    c = ChallengeSetCreator()
+    if len(sys.argv) != 2:
+        print("usage: python create_challenge_set.py submission.csv")
+        sys.exit()
+
+    submission_filename = sys.argv[1]
+
+    c = ChallengeSetCreator(submission_filename)
     c.create_challenge_set()

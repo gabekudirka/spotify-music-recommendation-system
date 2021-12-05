@@ -24,10 +24,15 @@ class PredictSongs():
 
         self.clusters = {i: self.all_songs.loc[self.all_songs['labels'] == i] for i in range(self.audio_model.n_components)}
         self.sample_tracks = sample_tracks
+        self.prediction_count = 0
 
 
     #This assumes the playlist is just a list of tracks ids
     def predict(self, playlist, num_songs, model_name = 'audio'):
+
+        self.prediction_count += 1
+
+        print(f"Predicting { self.prediction_count }")
 
         # just get random songs if given none
         if len(playlist) == 0:
