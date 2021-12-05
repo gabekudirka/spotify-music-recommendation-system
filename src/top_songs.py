@@ -5,7 +5,7 @@ from scipy import spatial
 class TopSongs:
     def __init__(self):
         self.attributes = [ "danceability", "energy", "key", "loudness", "mode", "speechiness", "acousticness", "instrumentalness", "liveness", "valence", "tempo"]
-        
+
     def normalize_attr(self, songs):
         print('normalizing song attributes')
         mins = dict.fromkeys(self.attributes,10000000000)
@@ -14,7 +14,7 @@ class TopSongs:
         for key, vals in songs.items():
             #print(f'- getting min/max { index + 1 }/{ numSongs}: { key }          ', end='\r')
             index += 1
-            for attribute in self.attributes:                
+            for attribute in self.attributes:
                 if vals is not None:
                     mins[attribute] = min(vals[attribute], mins[attribute])
                     maxs[attribute] = max(vals[attribute], maxs[attribute])
@@ -35,7 +35,7 @@ class TopSongs:
         if song is None:
             return 1000000000
         totalDif = 0
-        for attribute in self.attributes:    
+        for attribute in self.attributes:
             totalDif += (target[attribute] - song[attribute ])**2
         return totalDif
 
@@ -63,6 +63,7 @@ class TopSongs:
     def get_similar_songs(self, songs, target, n):
             numSongs = len(songs)
             print('Number of songs:', numSongs)
+
             songs[self.attributes] = preprocessing.Normalizer().fit_transform(songs[self.attributes])
             target[self.attributes] = preprocessing.Normalizer().transform(target[self.attributes])
 
@@ -83,13 +84,13 @@ class TopSongs:
                 else:
                     topSongs[key] = score
                 idx += 1
-    
+
             return topSongs
-        
+
 
 if __name__ == '__main__':
     d = TrackAttributeDecoder()
-    d.decode_attribute_files()
+    d.decode_attribute_files(1000)
     #print(d.tracks.keys())
-    t =TopSongs()
-    print(t.get_similar_songs(d.tracks,d.tracks["spotify:track:3G8eHnIYQX6Gbjc5vulISf"],5))
+    t = TopSongs()
+    print(t.get_similar_songs(d.tracks, d.tracks["spotify:track:4Ju7C4g69ObdLrVO5qh1ks"], 5))

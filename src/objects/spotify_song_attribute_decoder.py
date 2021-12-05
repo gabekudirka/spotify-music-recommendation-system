@@ -4,8 +4,8 @@ import os
 import spotipy
 
 from .playlist_decoder import PlaylistDecoder
-from spotipy.oauth2 import SpotifyClientCredentials
 from .spotipy_helper import SpotipyHelper
+from spotipy.oauth2 import SpotifyClientCredentials
 
 class TrackAttributeDecoder:
 
@@ -21,7 +21,6 @@ class TrackAttributeDecoder:
             attribute_filenames = os.listdir(TrackAttributeDecoder.attributes_directory)
         else:
             attribute_filenames = os.listdir(TrackAttributeDecoder.attributes_directory)[:num_files]
-        
 
         file_amount = len(attribute_filenames)
 
@@ -30,6 +29,26 @@ class TrackAttributeDecoder:
         for index, filename in enumerate(attribute_filenames):
             print(f'- decoding attribute file { index + 1 }/{ file_amount }: { filename }          ', end='\r')
             self.decode_file(filename)
+
+        no_attribute_tracks = list(filter(lambda track: self.tracks[track] is None , self.tracks))
+
+        print(f'{len(no_attribute_tracks)} without attributes, normalizing them with default values                     ')
+
+        # Arbitrarily chosen based upon looking at other values in the dataset
+        default_attributes = { "danceability" : 0.4,
+        "energy" : 0.4,
+        "key" : 3,
+        "loudness" : -2,
+        "mode" : 1,
+        "speechiness" : 0.02,
+        "acousticness" : 0.02,
+        "instrumentalness" : 0.02,
+        "liveness" : 0.02,
+        "valence" : 0.02 ,
+        "tempo" : 80}
+
+        for no_attribute_track in no_attribute_tracks:
+            self.tracks[no_attribute_track] = default_attributes
 
         print(f'Done decoding { file_amount } attribute files                                        ')
 
@@ -43,4 +62,5 @@ class TrackAttributeDecoder:
 if __name__ == '__main__':
     d = TrackAttributeDecoder()
     d.decode_attribute_files()
-    print(d.tracks.keys())
+
+    print(d.tracks[:50])
