@@ -15,6 +15,11 @@ class SpotipyHelper:
                                                 client_secret = SPOTIPY_CLIENT_SECRET)
         self.client = spotipy.Spotify(auth_manager = auth_manager)
 
+        self.helper_counter = 0
+
+    def get_track_details(self, track_id):
+        return self.client.track(track_id)
+
     def get_track_name(self, track_id):
         return self.client.track(track_id)["name"]
 
@@ -22,10 +27,13 @@ class SpotipyHelper:
         return self.client.audio_features(track_id)
 
     def get_attributes_for_track_batch(self, track_ids):
-        assert len(track_ids) > 0, "Must call with at least one track id"
+        # assert len(track_ids) > 0, "Must call with at least one track id"
+        if len(track_ids) == 0:
+            return {}
         assert len(track_ids) < 101, "Can only call with a maximum of 100 track ids"
 
+        print(f" - calling batch with { len(track_ids) } track ids { self.helper_counter }                 ", end = '\r')
+
+        self.helper_counter += 1
+
         return self.client.audio_features(track_ids)
-
-
-    
