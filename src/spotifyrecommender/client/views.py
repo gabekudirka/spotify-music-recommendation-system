@@ -23,19 +23,36 @@ def index(request):
       data = form.cleaned_data
       playlist_uri = data['playlist_uri']
       playlist_dictionary = get_playlist_tracks(playlist_uri)
-      predict = PredictSongs()
-      predicted_songs = PredictSongs.predict(playlist_dictionary, 10)
-      print(predicted_songs)
+      p = PredictSongs()
+      predicted_songs = p.predict(playlist_dictionary, 10)
+      formatted_songs = get_songs_details(predicted_songs)
+      recommended_songs = formatted_songs[:500]
     #TODO send the recomemdations back
     # or not this is pretty solid already
-    for i in range(500):
-      recommended_songs.append(SongRec("Dark Horse", "Katy Parry", "https://open.spotify.com/track/4jbmgIyjGoXjY01XxatOx6"))
+    # for i in range(500):
+    #   recommended_songs.append(SongRec("Dark Horse", "Katy Parry", "https://open.spotify.com/track/4jbmgIyjGoXjY01XxatOx6"))
 
   template  = loader.get_template('client/index.html')
   context = {
     'recommended_songs': recommended_songs
   }
   return HttpResponse(template.render(context, request))
+
+
+def get_songs_details(songs):
+  tracks = []
+
+  # setup connection
+  client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
+  sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
+  
+  for song in songs:
+    print(song)
+    id = song['id'].split(':')[2]
+    response = sp.track(id)
+    tracks.append(SongRec(response['name'],response['artists']['name'],response['external_urls']['spotify']))
+  
+  return tracks
 
 def get_playlist_tracks(playlist_url):
     # setup connection
