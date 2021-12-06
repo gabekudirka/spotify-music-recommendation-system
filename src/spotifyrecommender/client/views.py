@@ -1,6 +1,5 @@
 import sys, os
 from urllib import parse
-sys.path.append('../../src')
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.template import loader
@@ -9,21 +8,21 @@ from .forms import NameForm
 from .models import SongRec
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from settings import SPOTIFY_CLIENT_SECRET, SPOTIFY_CLIENT_ID
-from predict import PredictSongs
+from .settings import SPOTIFY_CLIENT_SECRET, SPOTIFY_CLIENT_ID
+from .predict import PredictSongs
 
-
+sys.path.append("..")
 
 def index(request):
   recommended_songs = []
-  print(request)
   if request.method == 'POST':
     form = NameForm(request.POST)
     if form.is_valid():
       data = form.cleaned_data
       playlist_uri = data['playlist_uri']
       playlist_dictionary = get_playlist_tracks(playlist_uri)
-      p = PredictSongs()
+      p = PredictSongs([])
+
       predicted_songs = p.predict(playlist_dictionary, 10)
       formatted_songs = get_songs_details(predicted_songs)
       recommended_songs = formatted_songs[:500]
@@ -45,13 +44,17 @@ def get_songs_details(songs):
   # setup connection
   client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
   sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-  
+
   for song in songs:
-    print(song)
-    id = song['id'].split(':')[2]
+    id = song.split(':')[2]
     response = sp.track(id)
-    tracks.append(SongRec(response['name'],response['artists']['name'],response['external_urls']['spotify']))
-  
+
+    track_name = response['name']
+    artist_name = response['artists'][0]['name']
+    external_uri = response['external_urls']['spotify']
+
+    tracks.append(SongRec(track_name, artist_name, external_uri))
+
   return tracks
 
 def get_playlist_tracks(playlist_url):
@@ -59,15 +62,17 @@ def get_playlist_tracks(playlist_url):
     client_credentials_manager = SpotifyClientCredentials(client_id=SPOTIFY_CLIENT_ID, client_secret=SPOTIFY_CLIENT_SECRET)
     sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
-    #get playlist id 
+    #get playlist id
     path = parse.urlparse(playlist_url).path
     path, playlist_id = path.split('playlist/',1)
     # get playlist
     playlist = sp.playlist_items(playlist_id=playlist_id)
-    
+
     #parse into dictionary
     tracks = {}
-    for item in playlist['items']:
+
+    # only consider 1 track so it can actually be used
+    for item in playlist['items'][:1]:
       # get features
       features = sp.audio_features([item['track']['id']])
       attributes = {}
@@ -93,8 +98,3 @@ def get_playlist_tracks(playlist_url):
       tracks[f"spotify:track:{item['track']['id']}"] = attributes
 
     return tracks
-    
-    
-
-    
-    
